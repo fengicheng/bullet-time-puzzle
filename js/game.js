@@ -126,7 +126,7 @@ class GameScene extends Phaser.Scene {
         // 组
         this.platforms = this.physics.add.staticGroup();
         this.wallGroup = this.physics.add.staticGroup();
-        this.arrows = this.physics.add.group();
+        this.arrows = this.physics.add.group({ allowGravity: false });
         this.plateGroup = this.physics.add.staticGroup();
         this.doorGroup = this.physics.add.staticGroup();
         this.enemyGroup = this.physics.add.group();
