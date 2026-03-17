@@ -318,7 +318,7 @@ class GameScene extends Phaser.Scene {
         const arrow = this.add.rectangle(this.player.x, this.player.y - 5, 24, 6, 0xffcc00);
         this.physics.add.existing(arrow);
         arrow.body.setVelocity(vx, vy);
-        arrow.body.setAllowGravity(true);
+        arrow.body.setAllowGravity(false);
         arrow.body.setBounce(0);
         arrow.body.setSize(24, 6);
         arrow.setData('stuck', false);
@@ -374,7 +374,7 @@ class GameScene extends Phaser.Scene {
         this.frozenArrows.forEach(arrow => {
             if (arrow.active && !arrow.getData('stuck')) {
                 arrow.body.setVelocity(arrow.getData('savedVx'), arrow.getData('savedVy'));
-                arrow.body.setAllowGravity(true);
+                arrow.body.setAllowGravity(false);
                 arrow.setData('frozen', false);
             }
         });
