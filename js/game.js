@@ -320,6 +320,7 @@ class GameScene extends Phaser.Scene {
         arrow.body.setVelocity(vx, vy);
         arrow.body.setAllowGravity(false);
         arrow.body.setBounce(0);
+        arrow.body.setImmovable(true);
         arrow.body.setSize(24, 6);
         arrow.setData('stuck', false);
         arrow.setData('frozen', false);
