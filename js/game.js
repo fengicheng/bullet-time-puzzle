@@ -120,7 +120,7 @@ class GameScene extends Phaser.Scene {
         // 输入
         this.keys = this.input.keyboard.addKeys({
             W: 'W', A: 'A', S: 'S', D: 'D',
-            J: 'J', K: 'K', SPACE: 'SPACE',
+            J: 'J', K: 'K',
         });
 
         // 组
@@ -273,7 +273,7 @@ class GameScene extends Phaser.Scene {
         this.cooldownBar = this.add.graphics().setScrollFactor(0).setDepth(100);
         this.bulletTimeBar = this.add.graphics().setScrollFactor(0).setDepth(100);
 
-        this.controlsText = this.add.text(GAME_W / 2, GAME_H - 20, 'WASD/空格移动跳跃 | J射箭 | K子弹时间 | R重开', {
+        this.controlsText = this.add.text(GAME_W / 2, GAME_H - 20, 'AD移动 W跳跃 | J射箭 | K子弹时间 | R重开', {
             fontSize: '12px', fill: '#999999', fontFamily: 'Microsoft YaHei, sans-serif',
         }).setOrigin(0.5).setScrollFactor(0).setDepth(100);
 
@@ -306,15 +306,13 @@ class GameScene extends Phaser.Scene {
         if (this.shootCooldown > 0) return;
 
         const pointer = this.input.activePointer;
-        const angle = Phaser.Math.Angle.Between(
-            this.player.x, this.player.y,
-            pointer.x + this.cameras.main.scrollX,
-            pointer.y + this.cameras.main.scrollY
-        );
+        const pointerX = pointer.x + this.cameras.main.scrollX;
+        // 根据鼠标在玩家左侧还是右侧决定方向，水平发射
+        const dir = pointerX >= this.player.x ? 1 : -1;
 
         const speed = 500;
-        const vx = Math.cos(angle) * speed;
-        const vy = Math.sin(angle) * speed;
+        const vx = dir * speed;
+        const vy = 0;
 
         // 创建箭矢（矩形）
         const arrow = this.add.rectangle(this.player.x, this.player.y - 5, 24, 6, 0xffcc00);
@@ -327,7 +325,7 @@ class GameScene extends Phaser.Scene {
         arrow.setData('frozen', false);
         arrow.setData('savedVx', vx);
         arrow.setData('savedVy', vy);
-        arrow.setRotation(angle);
+        arrow.setRotation(dir > 0 ? 0 : Math.PI);
 
         this.arrows.add(arrow);
 
@@ -456,7 +454,7 @@ class GameScene extends Phaser.Scene {
         }
 
         // 跳跃
-        if ((this.keys.W.isDown || this.keys.SPACE.isDown) && body.blocked.down) {
+        if (this.keys.W.isDown && body.blocked.down) {
             body.setVelocityY(-420);
         }
 
